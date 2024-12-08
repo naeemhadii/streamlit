@@ -6,8 +6,10 @@ class App:
     def __init__(self):
         # Initialize the session state for navigation
         st.set_page_config(
+            page_title='my app',
             page_icon='streamli/PhotoFix_1698049553817.jpeg',
-            layout='centered'
+            layout='centered',
+            initial_sidebar_state='auto'
         )
         if "page" not in st.session_state:
             st.session_state.page = "index"
