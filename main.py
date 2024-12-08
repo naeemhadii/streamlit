@@ -12,5 +12,6 @@ df = pd.DataFrame(data)
 # Create an area chart
 st.subheader("Streamlit Area Chart Example")
 st.area_chart(df,x_label='valocity',y_label='speed')
+st.chat_input(placeholder='hello ',)
 
 st.write("This is a simple area chart example.")
