@@ -9,9 +9,17 @@ data = {
 
 df = pd.DataFrame(data)
 
+# Function to handle chat input submission
+def called(value):
+    st.write(f"User Input recieved: {value}")
+
 # Create an area chart
 st.subheader("Streamlit Area Chart Example")
-st.area_chart(df,x_label='valocity',y_label='speed')
-st.chat_input(placeholder='hello ',)
+st.area_chart(df)
+
+# Chat input with a callback
+user_input = st.chat_input(placeholder="Type something here...", key="chatbox")
+if user_input:  # When user submits input
+    called(user_input)
 
 st.write("This is a simple area chart example.")
