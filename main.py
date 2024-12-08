@@ -1,39 +1,78 @@
 import streamlit as st
+import pandas as pd
+
 
 class App:
     def __init__(self):
-        self.show_form()
-    def show_form(self):
-        st.header("Area Manager")
-        st.subheader("Mohsin Shah Sahib")
-        st.divider()
+        # Initialize the session state for navigation
+        if "page" not in st.session_state:
+            st.session_state.page = "index"
+        self.build()
+        
+    def build(self):
+        # Check the current page and render accordingly
+        if st.session_state.page == "index":
+            self.index_page()
+        elif st.session_state.page == "result":
+            self.result_page()
 
-        # Create a container to group inputs
-        with st.container():
-            col1, col2 = st.columns(2)  # Two columns for a more compact layout
-            
-            with col1:
-                st.session_state.loan_amount = st.text_input("Loan Amount",placeholder="Enter loan amount",label_visibility="hidden",value=st.session_state.get("loan_amount", ""))
-                st.session_state.loan_duration = st.text_input("Loan Duration",placeholder="Enter loan duration",label_visibility="hidden",value=st.session_state.get("loan_duration", ""))
-            
-            with col2:
-                st.session_state.markup_rate = st.text_input(
-                    "Markup Rate",
-                    placeholder="Enter markup rate",
-                    label_visibility="hidden",
-                    value=st.session_state.get("markup_rate", "")
-                )
-                st.session_state.processing = st.text_input(
-                    "Processing",
-                    placeholder="Enter processing fees",
-                    label_visibility="hidden",
-                    value=st.session_state.get("processing", "")
-                )
-
-        # Button for navigation
-        if st.button("Calculate", use_container_width=True):
-            if all([st.session_state.loan_amount, st.session_state.markup_rate, st.session_state.loan_duration, st.session_state.processing]):
-                st.session_state.page = "results"
+    def index_page(self):
+        self.loan = st.text_input(
+            placeholder="Loan Amount", 
+            label="loan", 
+            label_visibility='collapsed', 
+            value=""
+        )
+        self.markup = st.text_input(
+            placeholder="Markup Rate", 
+            label="mark", 
+            label_visibility="collapsed", 
+            value=""
+        )
+        self.tenor = st.text_input(
+            placeholder="Tenor Period", 
+            label="tenor", 
+            label_visibility="collapsed", 
+            value=""
+        )
+        self.processing = st.text_input(
+            placeholder="Processing Rate", 
+            label="processing", 
+            label_visibility="collapsed", 
+            value=""
+        )
+        
+        # Button to navigate to the results page
+        if st.button(label="Calculate", use_container_width=True):
+            if all([self.loan, self.markup, self.tenor, self.processing]):
+                st.session_state.loan = self.loan
+                st.session_state.markup = self.markup
+                st.session_state.tenor = self.tenor
+                st.session_state.processing = self.processing
+                st.session_state.page = "result"
             else:
-                st.error("Please fill in all the fields before calculating.")
+                st.error("Please fill in all the fields!")
+
+    def result_page(self):
+        # Results page to display calculations
+
+        st.title("Calculation Results")
+        data = {
+            "Loan Amount": [st.session_state.loan],
+            "Markup Rate": [st.session_state.markup],
+            "Tenor Period": [st.session_state.tenor],
+            "Processing Rate": [st.session_state.processing],
+        }
+
+        df = pd.DataFrame(data)
+
+        # Render the DataTable
+        st.write("Loan Information Table")
+        st.dataframe(df,use_container_width=True,column_config=None)
+        
+        if st.button("Go Back"):
+            st.session_state.page = "index"
+
+
+# Instantiate and run the app
 App()
