@@ -7,7 +7,7 @@ class App:
         # Initialize the session state for navigation
         st.set_page_config(
             page_title='my app',
-            page_icon='streamli/PhotoFix_1698049553817.jpeg',
+            page_icon='../streamli/PhotoFix_1698049553817.jpeg',
             layout='centered',
             initial_sidebar_state='auto'
         )
