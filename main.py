@@ -5,6 +5,10 @@ import pandas as pd
 class App:
     def __init__(self):
         # Initialize the session state for navigation
+        st.set_page_config(
+            page_icon='streamli/PhotoFix_1698049553817.jpeg',
+            layout='centered'
+        )
         if "page" not in st.session_state:
             st.session_state.page = "index"
         self.build()
